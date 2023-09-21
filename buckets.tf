@@ -1,7 +1,7 @@
 resource "google_storage_bucket" "auto-expire" {
-  name          = "auto-expiring-bucket"
+  name          = var.bucketname
   location      = "US"
-  project       = "myanthosproject2"
+  project       = var.projectid
   force_destroy = true
 
   lifecycle_rule {
