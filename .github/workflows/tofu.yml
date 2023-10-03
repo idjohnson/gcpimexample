@@ -49,6 +49,10 @@ jobs:
     - name: Tofu Format
       run: tofu fmt -check
 
+    # TF Validate
+    - name: Tofu Validate
+      run: tofu validate
+
     # Generates an execution plan for Terraform
     - name: Tofu Plan
       run: tofu plan -input=false
