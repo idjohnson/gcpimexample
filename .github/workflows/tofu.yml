@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+env:
+  TF_VAR_projectid: myanthosproject2
+  TF_VAR_bucketname: mytestbucket223344
+
 jobs:
   tofu:
     name: 'Tofu'
