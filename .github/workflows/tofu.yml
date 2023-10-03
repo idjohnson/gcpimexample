@@ -28,6 +28,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        token_format: "access_token"
+        create_credentials_file: true
+        activate_credentials_file: true
+        workload_identity_provider: 'projects/511842454269/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+        service_account: 'test-wif@myanthosproject2.iam.gserviceaccount.com'
+        access_token_lifetime: '100s'
+        
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Tofu Init
       run: tofu init
