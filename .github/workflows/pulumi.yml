@@ -41,6 +41,7 @@ jobs:
     - name: pulumi up
       run: |
          PATH="/home/runner/.pulumi/bin:$PATH"
+         pulumi stack select idjohnson/gcpbuckettest/dev
          pulumi up --yes
       working-directory: ./pulumi
       env:
