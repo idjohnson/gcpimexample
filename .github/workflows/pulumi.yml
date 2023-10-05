@@ -45,18 +45,28 @@ jobs:
          pulumi up --yes
 
          # Get the bucket
-         pulumi stack output -j | jq -r '.bucketName' | tr -d '\n' > bucketName
+         pulumi stack output -j | jq -r '.bucketName' | tr -d '\n' | sed 's/^gs:\/\///' > bucketName
          echo "Copy files to `cat ./bucketName`"
          
-         # do stuff
-         sleep 5
+         # set as an env var to use in other actions
+         echo "CREATEDBUCKET=`cat ./bucketName`" >> $GITHUB_ENV
+         
       working-directory: ./pulumi
       env:
         PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
 
+    - id: 'upload-file'
+      uses: 'google-github-actions/upload-cloud-storage@v1'
+      with:
+        path: 'bucketName'
+        destination: "${{ vars['CREATEDBUCKET'] }}/bucketName"
+
     - name: pulumi destory
       run: |
          PATH="/home/runner/.pulumi/bin:$PATH"
+
+         sleep 60
+
          pulumi stack select idjohnson/gcpbuckettest/dev
          pulumi destroy --yes
       working-directory: ./pulumi
