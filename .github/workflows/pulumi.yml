@@ -12,7 +12,6 @@ jobs:
   pulumi:
     name: 'Pulumi'
     runs-on: self-hosted
-    environment: production
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -61,11 +60,33 @@ jobs:
         path: 'pulumi/bucketName'
         destination: "${{ env.CREATEDBUCKET }}/bucketName"
 
+
+        
+  deploy-cleanup:
+    runs-on: self-hosted
+    environment: production
+    needs: [pulumi]
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        token_format: "access_token"
+        create_credentials_file: true
+        activate_credentials_file: true
+        workload_identity_provider: 'projects/511842454269/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+        service_account: 'test-wif@myanthosproject2.iam.gserviceaccount.com'
+        access_token_lifetime: '100s'
+        
     - name: pulumi destory
       run: |
          PATH="/home/runner/.pulumi/bin:$PATH"
-
-         sleep 60
 
          pulumi stack select idjohnson/gcpbuckettest/dev
          pulumi destroy --yes
