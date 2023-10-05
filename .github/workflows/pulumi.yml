@@ -61,7 +61,6 @@ jobs:
         destination: "${{ env.CREATEDBUCKET }}/bucketName"
 
 
-        
   deploy-cleanup:
     runs-on: self-hosted
     environment: production
@@ -83,7 +82,7 @@ jobs:
         workload_identity_provider: 'projects/511842454269/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
         service_account: 'test-wif@myanthosproject2.iam.gserviceaccount.com'
         access_token_lifetime: '100s'
-        
+
     - name: pulumi destory
       run: |
          PATH="/home/runner/.pulumi/bin:$PATH"
