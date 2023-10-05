@@ -43,6 +43,22 @@ jobs:
          PATH="/home/runner/.pulumi/bin:$PATH"
          pulumi stack select idjohnson/gcpbuckettest/dev
          pulumi up --yes
+
+         # Get the bucket
+         pulumi stack output -j | jq -r '.bucketName' | tr -d '\n' > bucketName
+         echo "Copy files to `cat ./bucketName`"
+         
+         # do stuff
+         sleep 5
+      working-directory: ./pulumi
+      env:
+        PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+    - name: pulumi destory
+      run: |
+         PATH="/home/runner/.pulumi/bin:$PATH"
+         pulumi stack select idjohnson/gcpbuckettest/dev
+         pulumi destroy --yes
       working-directory: ./pulumi
       env:
         PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
