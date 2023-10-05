@@ -58,7 +58,7 @@ jobs:
     - id: 'upload-file'
       uses: 'google-github-actions/upload-cloud-storage@v1'
       with:
-        path: 'bucketName'
+        path: 'pulumi/bucketName'
         destination: "${{ vars['CREATEDBUCKET'] }}/bucketName"
 
     - name: pulumi destory
