@@ -60,7 +60,6 @@ jobs:
         path: 'pulumi/bucketName'
         destination: "${{ env.CREATEDBUCKET }}/bucketName"
 
-
   deploy-cleanup:
     runs-on: self-hosted
     environment: production
