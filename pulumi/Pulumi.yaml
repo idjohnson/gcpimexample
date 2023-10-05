@@ -8,5 +8,6 @@ resources:
   # Create a GCP resource (Storage Bucket)
   my-bucket:
     properties:
+      forceDestroy: true
       location: US
     type: gcp:storage:Bucket
