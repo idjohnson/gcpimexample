@@ -1,0 +1,54 @@
+name: 'Pulumi'
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pulumi:
+    name: 'Pulumi'
+    runs-on: self-hosted
+    environment: production
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        token_format: "access_token"
+        create_credentials_file: true
+        activate_credentials_file: true
+        workload_identity_provider: 'projects/511842454269/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+        service_account: 'test-wif@myanthosproject2.iam.gserviceaccount.com'
+        access_token_lifetime: '100s'
+        
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: pulumi up
+      run: pulumi up --yes
+      working-directory: ./pulumi
+      env:
+        PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Pulumi stack select
+      run: |
+         pulumi stack select ls
+         pulumi stack select idjohnson/gcpbuckettest/dev
+      working-directory: ./pulumi
+      env:
+        PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
