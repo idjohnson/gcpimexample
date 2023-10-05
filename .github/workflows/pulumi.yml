@@ -39,7 +39,9 @@ jobs:
         
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: pulumi up
-      run: pulumi up --yes
+      run: |
+         PATH="/home/runner/.pulumi/bin/pulumi:$PATH"
+         pulumi up --yes
       working-directory: ./pulumi
       env:
         PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
@@ -47,6 +49,7 @@ jobs:
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Pulumi stack select
       run: |
+         PATH="/home/runner/.pulumi/bin/pulumi:$PATH"
          pulumi stack select ls
          pulumi stack select idjohnson/gcpbuckettest/dev
       working-directory: ./pulumi
