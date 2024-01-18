@@ -2,7 +2,7 @@ name: 'Pulumi'
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dontbuild" ]
   pull_request:
 
 permissions:

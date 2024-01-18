@@ -2,7 +2,7 @@ name: 'Tofu'
 
 on:
   push:
-    branches: [ "dontbuild" ]
+    branches: [ "main" ]
   pull_request:
 
 permissions:
