@@ -1,7 +1,7 @@
-resource "google_storage_bucket" "auto-expire" {
-  name          = var.bucketname
-  location      = "US"
-  project       = var.projectid
+resource "google_storage_bucket" "auto_expire" {
+  name          = var.bucket_name
+  location      = var.bucket_location
+  project       = var.project_id
   force_destroy = true
 
   lifecycle_rule {
@@ -27,11 +27,11 @@ resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
-resource "google_storage_bucket" "default" {
+resource "google_storage_bucket" "terraform_state" {
   name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
-  project       = var.projectid
+  project       = var.project_id
   force_destroy = false
-  location      = "US"
+  location      = var.bucket_location
   storage_class = "STANDARD"
   versioning {
     enabled = true
